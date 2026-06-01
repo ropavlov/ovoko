@@ -17,7 +17,7 @@ export default defineConfig({
   // eBay mutates a single cart/session, so parallel specs would race each other.
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 1 : 0,
   workers: 1,
   // eBay's sidebar can take >30 s to render on slow connections; give each test
   // enough headroom so the overall test timeout doesn't fire before the action
