@@ -1,0 +1,10 @@
+[
+  {
+    "searchTerm": "Headphones",
+    "brand": "Sony",
+    "priceMin": 50,
+    "priceMax": 200,
+    "itemIndex": 3,
+    "guestEmail": "testguest.automation@example.com"
+  }
+]
