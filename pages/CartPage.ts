@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test';
+import { assertNotBotChallenge } from '../utils/bot-detection';
 
 /**
  * Shopping cart page (cart.ebay.com) — item count, removal, checkout entry.
@@ -33,6 +34,7 @@ export class CartPage {
   /** Navigates directly to the cart. Respects CART_URL for non-prod environments. */
   async goto(): Promise<void> {
     await this.page.goto(process.env.CART_URL ?? 'https://cart.ebay.com/');
+    await assertNotBotChallenge(this.page);
   }
 
   /**
@@ -76,8 +78,8 @@ export class CartPage {
   }
 
   /**
-   * True when cart.ebay.com cannot render a usable cart — either the generic
-   * error page or eBay's bot-detection CAPTCHA/verify page.
+   * True when cart.ebay.com cannot render a usable cart — generic error page
+   * or any eBay bot-detection / verification page.
    */
   private async isErrorPage(): Promise<boolean> {
     const title = (await this.page.title()).toLowerCase();
@@ -85,8 +87,11 @@ export class CartPage {
     return (
       title.includes('error') ||
       title.includes('verify') ||
+      title.includes('pardon') ||
+      title.includes('security measure') ||
       url.includes('captcha') ||
-      url.includes('splashui')
+      url.includes('splashui') ||
+      url.includes('interrupt')
     );
   }
 

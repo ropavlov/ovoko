@@ -1,4 +1,5 @@
 import { Page, Locator } from '@playwright/test';
+import { assertNotBotChallenge } from '../utils/bot-detection';
 
 /**
  * Search results page (SRP) — brand/price filtering and item selection.
@@ -60,6 +61,7 @@ export class ResultsPage {
     url.searchParams.set('_udlo', String(min));
     url.searchParams.set('_udhi', String(max));
     await this.page.goto(url.toString());
+    await assertNotBotChallenge(this.page);
     await this.waitForResultsToSettle();
   }
 
@@ -76,6 +78,7 @@ export class ResultsPage {
     if (!href) throw new Error(`Item ${n} has no href — possible skeleton or JS-navigated card`);
     await this.page.goto(href);
     await this.page.waitForLoadState('domcontentloaded');
+    await assertNotBotChallenge(this.page);
   }
 
   /** Number of real result cards currently rendered. */

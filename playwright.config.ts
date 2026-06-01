@@ -28,7 +28,6 @@ export default defineConfig({
     baseURL: process.env.BASE_URL ?? 'https://www.ebay.com',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    videoSize: { width: 1024, height: 768 },
     trace: 'on-first-retry',
     actionTimeout: 15_000,
     navigationTimeout: 30_000,

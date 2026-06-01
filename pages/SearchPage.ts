@@ -1,4 +1,5 @@
 import { Page, Locator } from '@playwright/test';
+import { assertNotBotChallenge } from '../utils/bot-detection';
 
 /**
  * Home page + global search bar.
@@ -20,6 +21,7 @@ export class SearchPage {
   /** Navigates to the eBay home page (baseURL). */
   async goto(): Promise<void> {
     await this.page.goto('/');
+    await assertNotBotChallenge(this.page);
   }
 
   /** Convenience: navigate to the home page and dismiss the cookie banner. */
@@ -61,5 +63,6 @@ export class SearchPage {
     await this.searchInput.fill(term);
     await this.searchButton.click();
     await this.page.waitForLoadState('domcontentloaded');
+    await assertNotBotChallenge(this.page);
   }
 }
